@@ -1,0 +1,23 @@
+@font-face {
+  font-family: "BMDOHYEON_ttf";
+  src: url("./fonts/BMDOHYEON_ttf.ttf");
+}
+
+@font-face {
+  font-family: "BMJUA_ttf";
+  src: url("./fonts/BMJUA_ttf.ttf");
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'BMDOHYEON_ttf', 'Segoe UI','Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

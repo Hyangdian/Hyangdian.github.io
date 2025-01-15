@@ -1,0 +1,348 @@
+.search-result {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.search-result h3 {
+    cursor: pointer;
+    color: #007bff;
+    margin: 0 0 10px 0;
+}
+
+.tags {
+    margin-bottom: 10px;
+}
+
+.tag {
+    background-color: #e9ecef;
+    padding: 3px 8px;
+    border-radius: 12px;
+    margin-right: 5px;
+    font-size: 0.9em;
+}
+
+.content {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.boardgame-search {
+    padding: 20px;
+}
+
+form {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.search-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.game-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.game-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.tag {
+    background: #f0f0f0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.date {
+    color: #666;
+    font-size: 0.8em;
+}
+
+.game-detail {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.back-button {
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    background-color: #e0e0e0;
+}
+
+.markdown-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    line-height: 1.6;
+    text-align: left;
+}
+
+.markdown-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+    border-radius: 4px;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+.markdown-content p {
+    margin-bottom: 1em;
+}
+
+.thumbnail {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.game-card h3 {
+    margin: 10px;
+}
+
+.game-card .tags {
+    padding: 0 10px;
+}
+
+.game-card .date {
+    padding: 0 10px 10px;
+}
+
+.search-form {
+    margin: 0 auto 30px;
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.search-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 게임 이름 검색 입력창 */
+.search-group:nth-child(1) {
+    flex: 3;
+    min-width: 400px;
+    max-width: 650px;
+}
+
+/* 태그 버튼 */
+.search-group:nth-child(2) {
+    flex: 2;
+    min-width: 100px;
+    max-width: 150px;
+}
+
+/* 인원 수 입력창 */
+.search-group:nth-child(3) {
+    flex: 1;
+    min-width: 100px;
+    max-width: 150px;
+}
+
+/* 검색 버튼 */
+.search-group:nth-child(4) {
+    flex: 1;
+    min-width: 100px;
+    max-width: 150px;
+}
+
+.search-input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.player-input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.tag-button {
+    padding: 10px 20px;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;  /* 텍스트 줄바꿈 방지 */
+}
+
+.tag-button:hover {
+    background: #e0e0e0;
+}
+
+.search-button {
+    padding: 10px 20px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.search-button:hover {
+    background: #0056b3;
+}
+
+.no-results {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 1.1em;
+}
+
+.search-results-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 500px;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 60px;
+    width: 100%;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.tag-modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.tag-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin: 20px 0;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-buttons button {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.modal-buttons .confirm-button {
+    background: #007bff;
+    color: white;
+    border: none;
+}
+
+.tag-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.tag-checkbox:hover {
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+/* 마크다운 컨텐츠 스타일 */
+.markdown-content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
