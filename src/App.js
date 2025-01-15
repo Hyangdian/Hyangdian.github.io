@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       <Navbar/>
       <Routes>
-        <Route path="/*" element={
+        <Route path="/" element={
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
