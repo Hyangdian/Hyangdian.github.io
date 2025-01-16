@@ -30,10 +30,10 @@ function BoardgameSearch() {
                             const content = await fetchGitHubContent(file.name);
                             const metadata = parseMetadata(content);
                             
-                            // 로그 출력
-                            console.log(`File: ${file.name}`);
-                            console.log(`Response Content: ${content}`);
-                            console.log(`Parsed Metadata:`, metadata);
+                            // // 로그 출력
+                            // console.log(`File: ${file.name}`);
+                            // console.log(`Response Content: ${content}`);
+                            // console.log(`Parsed Metadata:`, metadata);
 
                             return {
                                 name: file.name,
@@ -79,7 +79,7 @@ function BoardgameSearch() {
             const tagMatch = selectedTags.length === 0 || 
                 selectedTags.every(tag => file.tags?.includes(tag));
             
-            // 인원수 필터
+            // 인원수 필터 (메타데이터의 players 사용)
             const playerMatch = isPlayerCountInRange(file.players, playerCount);
             
             return nameMatch && tagMatch && playerMatch;
@@ -90,13 +90,13 @@ function BoardgameSearch() {
     const handleGameClick = async (file) => {
         try {
             const content = await fetchGitHubContent(file.name);
-            console.log('받아온 컨텐츠:', content); // 디버깅용
+            // console.log('받아온 컨텐츠:', content); // 디버깅용
 
             // 메타데이터와 컨텐츠 분리
             const metadata = parseMetadata(content);
             const contentWithoutMeta = metadata.content;
 
-            console.log('메타데이터 제거된 컨텐츠:', contentWithoutMeta); // 디버깅용
+            // console.log('메타데이터 제거된 컨텐츠:', contentWithoutMeta); // 디버깅용
 
             // 이미지 경로 수정
             const processedContent = contentWithoutMeta.replace(
@@ -116,7 +116,7 @@ function BoardgameSearch() {
                 content: marked(processedContent)
             });
 
-            console.log('변환된 HTML:', marked(processedContent)); // 디버깅용
+            // console.log('변환된 HTML:', marked(processedContent)); // 디버깅용
         } catch (error) {
             console.error("컨텐츠 로딩 실패:", error);
         }

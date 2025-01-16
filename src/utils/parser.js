@@ -10,6 +10,7 @@ export function parseMetadata(responseContent) {
         title: "", // 기본값
         tags: [],  // 기본값
         thumbnail: "", // 썸네일 기본값
+        players: "", // 인원수 기본값 추가
         content: decodedContent // 디코딩된 Markdown 내용
     };
 
@@ -29,6 +30,8 @@ export function parseMetadata(responseContent) {
                 metadata.tags = JSON.parse(values.join(':').trim()); // 태그 추출
             } else if (key.trim() === 'thumbnail') {
                 metadata.thumbnail = values.join(':').trim().replace(/"/g, ''); // 썸네일 경로 추출 및 따옴표 제거
+            } else if (key.trim() === 'players') { // 인원수 추출 추가
+                metadata.players = values.join(':').trim().replace(/"/g, ''); // 인원수 추출
             }
         });
 
