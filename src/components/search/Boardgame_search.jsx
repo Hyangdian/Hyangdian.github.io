@@ -23,23 +23,27 @@ function BoardgameSearch() {
         async function loadFiles() {
             try {
                 const fileList = await listFiles();
-                const filesWithMeta = await Promise.all(
+                const validFiles = await Promise.all(
                     fileList
                         .filter(file => file.name.endsWith('.md'))
                         .map(async (file) => {
                             const content = await fetchGitHubContent(file.name);
                             const metadata = parseMetadata(content);
+                            
+                            // 로그 출력
+                            console.log(`File: ${file.name}`);
+                            console.log(`Response Content: ${content}`);
+                            console.log(`Parsed Metadata:`, metadata);
+
                             return {
-                                ...file,
+                                name: file.name,
                                 ...metadata,
                             };
                         })
                 );
                 
-                // 유효한 파일만 필터링
-                const validFiles = filesWithMeta.filter(file => file.title && file.date);
                 setFiles(validFiles);
-                setSearchResults(validFiles); // 초기에 모든 게임 표시
+                setSearchResults(validFiles);
                 
                 // 모든 태그 수집
                 const tags = new Set();
@@ -89,9 +93,9 @@ function BoardgameSearch() {
             console.log('받아온 컨텐츠:', content); // 디버깅용
 
             // 메타데이터와 컨텐츠 분리
-            const [, , ...contentParts] = content.split('---');
-            const contentWithoutMeta = contentParts.join('---').trim();
-            
+            const metadata = parseMetadata(content);
+            const contentWithoutMeta = metadata.content;
+
             console.log('메타데이터 제거된 컨텐츠:', contentWithoutMeta); // 디버깅용
 
             // 이미지 경로 수정
@@ -99,7 +103,8 @@ function BoardgameSearch() {
                 /!\[([^\]]*)\]\(([^)]+)\)/g,
                 (match, alt, path) => {
                     if (!path.startsWith('http')) {
-                        const fullPath = `https://raw.githubusercontent.com/Hyang-Dian/Hyang-Dian.github.io/main/@content/images/${path}`;
+                        const fullPath = getImageUrl(path)
+                        // `https://raw.githubusercontent.com/Hyangdian/TTSKRDB/master/@content/${path}`;
                         return `![${alt}](${fullPath})`;
                     }
                     return match;
@@ -107,7 +112,7 @@ function BoardgameSearch() {
             );
 
             setSelectedContent({
-                title: file.title,
+                title: metadata.title,
                 content: marked(processedContent)
             });
 
@@ -119,7 +124,7 @@ function BoardgameSearch() {
 
     const getImageUrl = (imagePath) => {
         // GitHub raw content URL 생성
-        return `https://raw.githubusercontent.com/Hyang-Dian/Hyang-Dian.github.io/main/@content/images/${imagePath}`;
+        return `https://raw.githubusercontent.com/Hyangdian/TTSKRDB/master/@content/${imagePath}`;
     };
     
     // 현재 페이지의 게임들만 가져오기
