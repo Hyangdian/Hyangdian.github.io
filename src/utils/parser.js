@@ -1,22 +1,18 @@
 export function parseMetadata(responseContent) {
-    // JSON 파싱
-    const jsonContent = JSON.parse(responseContent);
-    
-    // base64로 인코딩된 content를 디코딩
-    const decodedContent = decodeBase64(jsonContent.content);
+    console.log('Parsing Response Content:', responseContent);
 
-    // 메타데이터 초기화
+    // 기본값 설정
     let metadata = {
-        title: "", // 기본값
-        tags: [],  // 기본값
-        thumbnail: "", // 썸네일 기본값
-        players: "", // 인원수 기본값 추가
-        content: decodedContent // 디코딩된 Markdown 내용
+        title: "",
+        tags: [],
+        thumbnail: "",
+        players: "",
+        content: responseContent, // 원본 Markdown 내용
     };
 
-    // 메타데이터 추출
-    const metadataRegex = /^---\n([\s\S]*?)\n---/; // YAML 메타데이터를 찾기 위한 정규 표현식
-    const match = decodedContent.match(metadataRegex);
+    // YAML 메타데이터 추출을 위한 정규 표현식
+    const metadataRegex = /^---\s*([\s\S]*?)\s*---/;
+    const match = responseContent.match(metadataRegex);
 
     if (match) {
         const metadataStr = match[1];
@@ -24,25 +20,31 @@ export function parseMetadata(responseContent) {
 
         lines.forEach(line => {
             const [key, ...values] = line.split(':');
-            if (key.trim() === 'title') {
-                metadata.title = values.join(':').trim().replace(/"/g, ''); // 제목 추출
-            } else if (key.trim() === 'tags') {
-                metadata.tags = JSON.parse(values.join(':').trim()); // 태그 추출
-            } else if (key.trim() === 'thumbnail') {
-                metadata.thumbnail = values.join(':').trim().replace(/"/g, ''); // 썸네일 경로 추출 및 따옴표 제거
-            } else if (key.trim() === 'players') { // 인원수 추출 추가
-                metadata.players = values.join(':').trim().replace(/"/g, ''); // 인원수 추출
+            if (!key || !values.length) return; // 잘못된 줄 무시
+
+            const keyTrimmed = key.trim();
+            const value = values.join(':').trim().replace(/(^"|"$)/g, ''); // 값의 앞뒤 따옴표 제거
+
+            if (keyTrimmed === 'title') {
+                metadata.title = value;
+            } else if (keyTrimmed === 'tags') {
+                // tags는 배열 형태로 파싱
+                metadata.tags = value
+                    .replace(/^\[/, '') // 앞 대괄호 제거
+                    .replace(/\]$/, '') // 뒤 대괄호 제거
+                    .split(',')         // 콤마 기준 분리
+                    .map(tag => tag.trim().replace(/(^"|"$)/g, '')); // 각 태그의 따옴표 제거
+            } else if (keyTrimmed === 'thumbnail') {
+                metadata.thumbnail = value;
+            } else if (keyTrimmed === 'players') {
+                metadata.players = value;
             }
         });
 
-        // 메타데이터가 포함된 부분을 content에서 제거
-        metadata.content = decodedContent.replace(metadataRegex, '').trim();
+        // 메타데이터 제거 후 Markdown 내용만 남김
+        metadata.content = responseContent.replace(metadataRegex, '').trim();
     }
 
+    console.log('Parsed Metadata:', metadata);
     return metadata;
 }
-
-// base64 디코딩 함수
-const decodeBase64 = (base64) => {
-    return decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-};

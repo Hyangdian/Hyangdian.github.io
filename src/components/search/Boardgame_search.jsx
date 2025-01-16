@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchGitHubContent, listFiles } from '../../utils/github';
+import { listGoogleDriveFiles, fetchGoogleDriveContent } from '../../utils/github';
 import { parseMetadata } from '../../utils/parser';
 import { marked } from 'marked';
 import './Boardgame_search.css';
@@ -22,12 +22,12 @@ function BoardgameSearch() {
     useEffect(() => {
         async function loadFiles() {
             try {
-                const fileList = await listFiles();
+                const fileList = await listGoogleDriveFiles();
                 const validFiles = await Promise.all(
                     fileList
                         .filter(file => file.name.endsWith('.md'))
                         .map(async (file) => {
-                            const content = await fetchGitHubContent(file.name);
+                            const content = await fetchGoogleDriveContent(file.id);
                             const metadata = parseMetadata(content);
                             
                             // // 로그 출력
@@ -89,7 +89,7 @@ function BoardgameSearch() {
 
     const handleGameClick = async (file) => {
         try {
-            const content = await fetchGitHubContent(file.name);
+            const content = await fetchGoogleDriveContent(file.name);
             // console.log('받아온 컨텐츠:', content); // 디버깅용
 
             // 메타데이터와 컨텐츠 분리
@@ -103,8 +103,7 @@ function BoardgameSearch() {
                 /!\[([^\]]*)\]\(([^)]+)\)/g,
                 (match, alt, path) => {
                     if (!path.startsWith('http')) {
-                        const fullPath = getImageUrl(path)
-                        // `https://raw.githubusercontent.com/Hyangdian/TTSKRDB/master/@content/${path}`;
+                        const fullPath = path
                         return `![${alt}](${fullPath})`;
                     }
                     return match;
@@ -122,11 +121,6 @@ function BoardgameSearch() {
         }
     };
 
-    const getImageUrl = (imagePath) => {
-        // GitHub raw content URL 생성
-        return `https://raw.githubusercontent.com/Hyangdian/TTSKRDB/master/@content/${imagePath}`;
-    };
-    
     // 현재 페이지의 게임들만 가져오기
     const getCurrentGames = () => {
         const indexOfLastGame = currentPage * gamesPerPage;
@@ -236,7 +230,7 @@ function BoardgameSearch() {
                                         {file.thumbnail && (
                                             <div className="thumbnail">
                                                 <img 
-                                                    src={getImageUrl(file.thumbnail)} 
+                                                    src={file.thumbnail} 
                                                     alt={file.title}
                                                 />
                                             </div>
