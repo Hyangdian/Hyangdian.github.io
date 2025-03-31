@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { listGoogleDriveFiles, fetchGoogleDriveContent, fetchGoogleDriveImage } from '../../utils/ttsdb_fetcher';
+import { listFiles, fetchLocalMarkdownContent } from '../../utils/ttsdb_fetcher';
 import { marked } from 'marked';
 import './Boardgame_search.css';
 
@@ -22,7 +22,7 @@ function BoardgameSearch() {
     useEffect(() => {
         async function loadFiles() {
             try {
-                const fileList = await listGoogleDriveFiles();
+                const fileList = await listFiles();
                 const validFiles = fileList.map(file => ({
                     name: file.name,
                     filelink: file.filelink,
@@ -72,30 +72,19 @@ function BoardgameSearch() {
     const handleGameClick = async (file) => {
         setLoadingContent(true); // 로딩 시작
         try {
-            const content = await fetchGoogleDriveContent(file.filelink);
+            const content = await fetchLocalMarkdownContent(file.filelink.split('.')[0] + '.md'); // 로컬 마크다운 파일 가져오기
 
             // 모든 img 태그의 src를 비동기적으로 처리
             const imgTags = content.match(/<img src="([^"]+)"/g) || []; // img 태그를 찾고, 없으면 빈 배열
-            const imgPromises = imgTags.map(async (imgTag) => {
+            const processedContent = imgTags.reduce((acc, imgTag) => {
                 const srcMatch = imgTag.match(/src="([^"]+)"/);
                 if (srcMatch) {
                     const imageUrl = srcMatch[1]; // 원래의 src 값을 가져옴
-                    const imageBlob = await fetchGoogleDriveImage(imageUrl); // fetchGoogleDriveImage 호출
-                    const blobUrl = URL.createObjectURL(imageBlob); // Blob URL 생성
-                    return imgTag.replace(imageUrl, blobUrl); // 원래의 img 태그에서 src를 Blob URL로 변경
+                    const localImageUrl = `/database/images/${imageUrl}`; // 로컬 이미지 URL로 변경
+                    return acc.replace(imgTag, imgTag.replace(imageUrl, localImageUrl)); // 원래의 img 태그에서 src를 로컬 URL로 변경
                 }
-                return imgTag; // src가 없으면 원래의 img 태그 반환
-            });
-
-            // 모든 Promise가 완료될 때까지 기다림
-            const processedImages = await Promise.all(imgPromises);
-            
-            // processedImages를 사용하여 content의 img 태그를 모두 변경
-            let processedContent = content;
-            processedImages.forEach((newImgTag, index) => {
-                // 각 img 태그를 올바른 위치에 맞춰서 대체
-                processedContent = processedContent.replace(imgTags[index], newImgTag);
-            });
+                return acc; // src가 없으면 원래의 acc 반환
+            }, content);
 
             setSelectedContent({
                 content: marked(processedContent), // 변경된 content 사용
@@ -221,7 +210,7 @@ function BoardgameSearch() {
                                         {file.thumbnail && (
                                             <div className="thumbnail">
                                                 <img 
-                                                    src={file.thumbnail}
+                                                    src={`/database/images/${file.thumbnail}`} // 로컬 썸네일 URL로 변경
                                                     alt={file.name}
                                                 />
                                             </div>

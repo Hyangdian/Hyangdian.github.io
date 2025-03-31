@@ -1,7 +1,6 @@
 .navbar_background {
     height: 8vh;
     width: 100vw;
-    min-width: 720px;
     display: grid;
     grid-template-columns: 2fr 3fr 0.3fr;
     grid-template-rows: 40px;
@@ -12,23 +11,23 @@
     display:grid;
     grid-template-columns: 40px 1fr;
     align-items: center;
-    margin: 5px 5px 5px 20px;
+    margin: 5px 5px 5px 5px;
 }
 .Title {
     text-decoration: none;
     font-family: "BMJUA_ttf";
-    font-size: 25px;
+    font-size: 20px;
     color: black;
     white-space: pre;
 }
 .nav_options {
     width: 100%;    
-    padding: 15px 0px;
+    padding: 5px 0px;
     text-align: right;
     
 }
 .navbar_menu {
     color:black;
-    margin: 20px;
+    margin: min(5%,15px);
     text-decoration: none;
 }
