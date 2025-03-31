@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { listFiles, fetchLocalMarkdownContent } from '../../utils/ttsdb_fetcher';
 import { marked } from 'marked';
 import './Boardgame_search.css';
+import GoogleAdvertise from "../GoogleAdd/GoogleAdvertise";
 
 function BoardgameSearch() {
     const [files, setFiles] = useState([]);
@@ -235,6 +236,9 @@ function BoardgameSearch() {
                                         {i + 1}
                                     </button>
                                 ))}
+                            </div>
+                            <div className="advertisement-wrapper">
+                                <GoogleAdvertise/>
                             </div>
                         </>
                     ) : (

@@ -2,6 +2,7 @@ import React from "react";
 import './Contact.css'
 import Discord from './discord_img.png'
 import Hyang from './hyang.png'
+import GoogleAdvertise from "../GoogleAdd/GoogleAdvertise";
 
 function Contactpage() {
     return(
@@ -24,6 +25,7 @@ function Contactpage() {
                 추가하고 싶은 보드게임 내용의 경우 TTSKR 디스코드를 통해 전달해주세요.<br/>
             </p>
         </header>
+        <GoogleAdvertise/>
     </div>
     )
 }

@@ -4,6 +4,7 @@ import Navbar from './components/navbar/Nav_bar';
 import {Routes, Route} from "react-router-dom";
 import BoardgameSearch from './components/search/Boardgame_search';
 import Contactpage from './components/contact/Contact';
+import GoogleAdvertise from './components/GoogleAdd/GoogleAdvertise';
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
         이 사이트는, TTSKR 유저들 및 테이블탑 시뮬레이터를 시작하려는 유저들을 위해<br/>
         테이블탑 시뮬레이터에서 한국어로 즐길 수 있는 게임들을 정리해 둔 공간입니다.<br/>
         </p>
+        <div style={{ width: '100%' }}>
+          <GoogleAdvertise/>
+        </div>
       </header>
         }/>
         <Route path="/search" element={<BoardgameSearch/>}/>
