@@ -1,33 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-function SearchResult({ file, loadContent }) {
-    const [content, setContent] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-
-    const handleClick = async () => {
-        if (!content) {
-            setIsLoading(true);
-            const loadedContent = await loadContent(file);
-            setContent(loadedContent);
-            setIsLoading(false);
-        }
+function SearchResult({ file }) {
+    const handleClick = () => {
+        // 새 탭에서 GameDetail 열기
+        window.open(`/search/${file.filelink}`, '_blank');
     };
 
     return (
-        <div className="search-result">
-            <h3 onClick={handleClick}>{file.title}</h3>
+        <div className="search-result" onClick={handleClick} style={{ cursor: 'pointer' }}>
+            <h3>{file.name}</h3>
             <div className="tags">
                 {file.tags.map((tag, index) => (
                     <span key={index} className="tag">{tag}</span>
                 ))}
             </div>
-            {isLoading && <div>로딩 중...</div>}
-            {content && (
-                <div 
-                    className="content"
-                    dangerouslySetInnerHTML={{ __html: content }}
-                />
-            )}
         </div>
     );
 }

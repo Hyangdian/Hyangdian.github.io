@@ -3,6 +3,8 @@ import { listFiles, fetchLocalMarkdownContent } from '../../utils/ttsdb_fetcher'
 import { marked } from 'marked';
 import './Boardgame_search.css';
 import GoogleAdvertise from "../GoogleAdd/GoogleAdvertise";
+import { useNavigate, useLocation, Routes, Route } from 'react-router-dom';
+import GameDetail from './GameDetail';
 
 function BoardgameSearch() {
     const [files, setFiles] = useState([]);
@@ -18,6 +20,8 @@ function BoardgameSearch() {
     const [isTagModalOpen, setIsTagModalOpen] = useState(false);
     const [tempSelectedTags, setTempSelectedTags] = useState([]);  // 모달에서 임시로 선택된 태그들
     const [loadingContent, setLoadingContent] = useState(false); // 로딩 상태 추가
+    const navigate = useNavigate();
+    const location = useLocation();
 
     // 초기 데이터 로딩 시 태그 목록도 수집
     useEffect(() => {
@@ -51,6 +55,19 @@ function BoardgameSearch() {
         loadFiles();
     }, []);
 
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const searchTermFromUrl = params.get('searchTerm') || '';
+        const selectedTagsFromUrl = params.get('selectedTags') ? params.get('selectedTags').split(',') : [];
+        const playerCountFromUrl = params.get('playerCount') || '';
+        const currentPageFromUrl = params.get('currentPage') ? parseInt(params.get('currentPage')) : 1;
+
+        setSearchTerm(searchTermFromUrl);
+        setSelectedTags(selectedTagsFromUrl);
+        setPlayerCount(playerCountFromUrl);
+        setCurrentPage(currentPageFromUrl);
+    }, [location.search]);
+
     const handleSearch = (e) => {
         e.preventDefault();
         const results = files.filter(file => {
@@ -70,31 +87,9 @@ function BoardgameSearch() {
         setSearchResults(results);
     };
     
-    const handleGameClick = async (file) => {
-        setLoadingContent(true); // 로딩 시작
-        try {
-            const content = await fetchLocalMarkdownContent(file.filelink.split('.')[0] + '.md'); // 로컬 마크다운 파일 가져오기
-
-            // 모든 img 태그의 src를 비동기적으로 처리
-            const imgTags = content.match(/<img src="([^"]+)"/g) || []; // img 태그를 찾고, 없으면 빈 배열
-            const processedContent = imgTags.reduce((acc, imgTag) => {
-                const srcMatch = imgTag.match(/src="([^"]+)"/);
-                if (srcMatch) {
-                    const imageUrl = srcMatch[1]; // 원래의 src 값을 가져옴
-                    const localImageUrl = `/database/images/${imageUrl}`; // 로컬 이미지 URL로 변경
-                    return acc.replace(imgTag, imgTag.replace(imageUrl, localImageUrl)); // 원래의 img 태그에서 src를 로컬 URL로 변경
-                }
-                return acc; // src가 없으면 원래의 acc 반환
-            }, content);
-
-            setSelectedContent({
-                content: marked(processedContent), // 변경된 content 사용
-            });
-        } catch (error) {
-            console.error("컨텐츠 로딩 실패:", error);
-        } finally {
-            setLoadingContent(false); // 로딩 종료
-        }
+    const handleGameClick = (file) => {
+        // 새 탭에서 GameDetail 열기
+        window.open(`/search/${file.filelink}`, '_blank');
     };
 
     // 현재 페이지의 게임들만 가져오기
@@ -108,7 +103,7 @@ function BoardgameSearch() {
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
         window.scrollTo(0, 0); // 페이지 상단으로 스크롤
-    };
+    };  
 
     // 태그 모달 열기
     const openTagModal = () => {
@@ -134,6 +129,14 @@ function BoardgameSearch() {
                 ? prev.filter(t => t !== tag)
                 : [...prev, tag]
         );
+    };
+
+    const handleSearchExecution = (searchTerm, selectedTags, playerCount, currentPage) => {
+        setSearchTerm(searchTerm);
+        setSelectedTags(selectedTags);
+        setPlayerCount(playerCount);
+        setCurrentPage(currentPage);
+        handleSearch(); // 검색 실행
     };
 
     return (
@@ -274,6 +277,10 @@ function BoardgameSearch() {
                     </div>
                 </div>
             )}
+
+            <Routes>
+                <Route path="/search/:filelink" element={<GameDetail onSearch={handleSearchExecution} />} />
+            </Routes>
         </div>
     );
 }

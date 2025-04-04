@@ -5,6 +5,7 @@ import {Routes, Route} from "react-router-dom";
 import BoardgameSearch from './components/search/Boardgame_search';
 import Contactpage from './components/contact/Contact';
 import GoogleAdvertise from './components/GoogleAdd/GoogleAdvertise';
+import GameDetail from './components/search/GameDetail';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         }/>
         <Route path="/search" element={<BoardgameSearch/>}/>
         <Route path="/contact" element={<Contactpage/>}/>
+        <Route path="/search/:filelink" element={<GameDetail />} />
       </Routes>
     </div>
   );
