@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { listFiles, fetchLocalMarkdownContent } from '../../utils/ttsdb_fetcher';
-import { marked } from 'marked';
+import { listFiles, } from '../../utils/ttsdb_fetcher';
 import './Boardgame_search.css';
 import GoogleAdvertise from "../GoogleAdd/GoogleAdvertise";
-import { useNavigate, useLocation, Routes, Route } from 'react-router-dom';
+import { useLocation, Routes, Route } from 'react-router-dom';
 import GameDetail from './GameDetail';
 
 function BoardgameSearch() {
@@ -19,8 +18,7 @@ function BoardgameSearch() {
     const gamesPerPage = 20;
     const [isTagModalOpen, setIsTagModalOpen] = useState(false);
     const [tempSelectedTags, setTempSelectedTags] = useState([]);  // 모달에서 임시로 선택된 태그들
-    const [loadingContent, setLoadingContent] = useState(false); // 로딩 상태 추가
-    const navigate = useNavigate();
+    const [loadingContent] = useState(false); // 로딩 상태 추가
     const location = useLocation();
 
     // 초기 데이터 로딩 시 태그 목록도 수집
