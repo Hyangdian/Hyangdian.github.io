@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { listFiles, } from '../../utils/ttsdb_fetcher';
 import './Boardgame_search.css';
+import GoogleAdvertise from "../GoogleAdd/GoogleAdvertise";
 import { useLocation, Routes, Route } from 'react-router-dom';
 import GameDetail from './GameDetail';
 
@@ -236,6 +237,9 @@ function BoardgameSearch() {
                                         {i + 1}
                                     </button>
                                 ))}
+                            </div>
+                            <div className="advertisement-wrapper">
+                                <GoogleAdvertise/>
                             </div>
                         </>
                     ) : (
