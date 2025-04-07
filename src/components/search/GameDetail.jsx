@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { fetchLocalMarkdownContent } from '../../utils/ttsdb_fetcher';
 import { marked } from 'marked';
 import './Boardgame_search.css';
 
-const GameDetail = () => {
-    const { filelink } = useParams();
+const GameDetail = ({ filelink, onBack }) => {
     const [content, setContent] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -38,6 +36,7 @@ const GameDetail = () => {
 
     return (
         <div className="game-detail">
+            <button onClick={onBack} className="back-button">목록으로 돌아가기</button>
             <div className="markdown-content" dangerouslySetInnerHTML={{ __html: content }} />
         </div>
     );

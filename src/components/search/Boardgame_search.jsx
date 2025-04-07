@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { listFiles, fetchLocalMarkdownContent } from '../../utils/ttsdb_fetcher';
-import { marked } from 'marked';
+import { listFiles } from '../../utils/ttsdb_fetcher';
 import './Boardgame_search.css';
 import GoogleAdvertise from "../GoogleAdd/GoogleAdvertise";
-import { useNavigate, useLocation, Routes, Route } from 'react-router-dom';
+import { useLocation, Routes, Route } from 'react-router-dom';
 import GameDetail from './GameDetail';
 
 function BoardgameSearch() {
@@ -19,8 +18,7 @@ function BoardgameSearch() {
     const gamesPerPage = 20;
     const [isTagModalOpen, setIsTagModalOpen] = useState(false);
     const [tempSelectedTags, setTempSelectedTags] = useState([]);  // 모달에서 임시로 선택된 태그들
-    const [loadingContent, setLoadingContent] = useState(false); // 로딩 상태 추가
-    const navigate = useNavigate();
+    const [loadingContent] = useState(false); // 로딩 상태 추가
     const location = useLocation();
 
     // 초기 데이터 로딩 시 태그 목록도 수집
@@ -88,8 +86,7 @@ function BoardgameSearch() {
     };
     
     const handleGameClick = (file) => {
-        // 새 탭에서 GameDetail 열기
-        window.open(`/search/${file.filelink}`, '_blank');
+        setSelectedContent(file); // 선택한 게임 정보를 상태에 저장
     };
 
     // 현재 페이지의 게임들만 가져오기
@@ -139,6 +136,10 @@ function BoardgameSearch() {
         handleSearch(); // 검색 실행
     };
 
+    const handleBack = () => {
+        setSelectedContent(null); // 선택된 게임 정보 초기화
+    };
+
     return (
         <div className="boardgame-search">
             <form onSubmit={handleSearch} className="search-form">
@@ -180,24 +181,10 @@ function BoardgameSearch() {
                 </div>
             </form>
 
-            {loadingContent ? ( // 로딩 화면 추가
+            {loadingContent ? (
                 <p>로딩 중...</p>
             ) : selectedContent ? (
-                <div className="markdown-content-container">
-                    <button 
-                        className="back-button"
-                        onClick={() => setSelectedContent(null)}
-                    >
-                        목록으로 돌아가기
-                    </button>
-                    {selectedContent.imageUrl && ( // Blob URL이 있을 경우 이미지 출력
-                        <img src={selectedContent.imageUrl} alt="게임 이미지" />
-                    )}
-                    <div 
-                        className="markdown-content"
-                        dangerouslySetInnerHTML={{ __html: selectedContent.content }}
-                    />
-                </div>
+                <GameDetail filelink={selectedContent.filelink} onBack={handleBack} />
             ) : (
                 <div className="search-results-container">
                     {loading ? (
