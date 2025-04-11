@@ -11,8 +11,15 @@ const GameDetail = ({ filelink, onBack }) => {
         const loadContent = async () => {
             try {
                 const markdownContent = await fetchLocalMarkdownContent(filelink.split('.')[0] + '.md');
-                const imgTags = markdownContent.match(/<img src="([^"]+)"/g) || [];
-                const processedContent = imgTags.reduce((acc, imgTag) => {
+                
+                // 인용문과 코드 블록을 감싸는 태그 추가
+                const processedContent = markdownContent
+                    .replace(/> (.*)/g, '<div class="quote">$1</div>') // 인용문 처리
+                    .replace(/```(.*?)```/gs, '<pre class="code-block">$1</pre>') // 코드 블록 처리
+                    .replace(/`(.*?)`/g, '<span class="content-block">$1</span>'); // 내용 감싸기 처리
+
+                const imgTags = processedContent.match(/<img src="([^"]+)"/g) || [];
+                const finalContent = imgTags.reduce((acc, imgTag) => {
                     const srcMatch = imgTag.match(/src="([^"]+)"/);
                     if (srcMatch) {
                         const imageUrl = srcMatch[1];
@@ -20,9 +27,9 @@ const GameDetail = ({ filelink, onBack }) => {
                         return acc.replace(imgTag, imgTag.replace(imageUrl, localImageUrl));
                     }
                     return acc;
-                }, markdownContent);
+                }, processedContent);
 
-                setContent(marked(processedContent));
+                setContent(marked(finalContent));
             } catch (error) {
                 console.error("컨텐츠 로딩 실패:", error);
             } finally {

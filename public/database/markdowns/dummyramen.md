@@ -1,5 +1,23 @@
 # 더미지만 맛있다! 라멘!
 <img src="라멘라멘.jpg" width = 400>
 
-# 게임 플레이 방법
-추가 예정
+# TTSKR DATABASE
+testing
+**testing**
+~~testing~~
+## tesing
+*testing*
+
+ - 11
+ - 22
+ - 33
+ - 44
+ - 55
+ - asdfasdf
+
+> Blockqoute
+
+```
+codeblock
+```
+`block~`
