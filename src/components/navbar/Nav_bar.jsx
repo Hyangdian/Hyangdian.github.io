@@ -10,7 +10,7 @@ function Navbar({ setCurrentPage }) {
             <div className='nav_options'>
                 <button className="navbar_menu" onClick={() => setCurrentPage('main')}>Main</button>
                 <button className="navbar_menu" onClick={() => setCurrentPage('search')}>Search</button>
-                <button className="navbar_menu" onClick={() => setCurrentPage('contact')}>Contact</button>
+                <button className="navbar_menu" onClick={() => setCurrentPage('contact')}>How to Use</button>
             </div>
         </div>
     );
