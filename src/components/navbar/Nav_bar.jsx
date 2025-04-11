@@ -1,20 +1,19 @@
 import './Nav_bar.css';
-import { Link } from 'react-router-dom';
-import React from 'react'
+import React from 'react';
 
-function Navbar() {
+function Navbar({ setCurrentPage }) {
     return (
         <div className='navbar_background'>
             <div className='identity'>
-                <Link className="Title" to={'/'}>TTSKR DATABASE</Link>
+                <button className="Title" onClick={() => setCurrentPage('main')}>TTSKR DATABASE</button>
             </div>
             <div className='nav_options'>
-                <Link className="navbar_menu" to={'/'}>Main</Link>
-                <Link className="navbar_menu" to={'/search'}>Search</Link>
-                <Link className="navbar_menu" to={'/contact'}>Contact</Link>
+                <button className="navbar_menu" onClick={() => setCurrentPage('main')}>Main</button>
+                <button className="navbar_menu" onClick={() => setCurrentPage('search')}>Search</button>
+                <button className="navbar_menu" onClick={() => setCurrentPage('contact')}>Contact</button>
             </div>
         </div>
     );
 };
 
-export default Navbar
+export default Navbar;

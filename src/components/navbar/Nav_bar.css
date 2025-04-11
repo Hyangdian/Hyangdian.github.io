@@ -19,15 +19,25 @@
     font-size: 20px;
     color: black;
     white-space: pre;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 .nav_options {
     width: 100%;    
     padding: 5px 0px;
     text-align: right;
-    
 }
 .navbar_menu {
-    color:black;
-    margin: min(5%,15px);
+    color: black;
+    margin: min(5%, 15px);
     text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: "BMJUA_ttf";
+    font-size: 16px;
+}
+.navbar_menu:hover {
+    text-decoration: underline;
 }
